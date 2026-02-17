@@ -31,6 +31,7 @@ import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.NatApp
 import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.rememberNatAppState
 import com.nativeapptemplate.nativeapptemplatefree.utils.NetworkMonitor
 import com.nativeapptemplate.nativeapptemplatefree.utils.Utility
+import com.ovidiucristurean.shared.platform
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.util.Date

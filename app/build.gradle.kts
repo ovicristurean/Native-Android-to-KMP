@@ -121,6 +121,7 @@ dependencies {
   api(libs.protobuf.kotlin.lite)
 
   implementation(project(":model"))
+  implementation(project(":shared"))
 
   implementation(platform(libs.androidx.compose.bom))
   implementation(libs.androidx.activity.compose)
@@ -165,5 +166,3 @@ dependencies {
   testImplementation(libs.kotlinx.coroutines.test)
   testImplementation(libs.robolectric)
 }
-
-
