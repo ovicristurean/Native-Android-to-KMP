@@ -10,6 +10,7 @@ androidxHiltNavigationCompose = "1.2.0"
 androidxLifecycle = "2.8.7"
 androidxNavigation = "2.8.5"
 androidxProfileinstaller = "1.4.1"
+androidxRoom = "2.7.0-alpha13"
 androidxTracing = "1.3.0-alpha02"
 capturable = "3.0.1"
 composeQrCode = "1.0.1"
@@ -32,6 +33,7 @@ retrofitKotlinxSerializationJson = "1.0.0"
 robolectric = "4.14.1"
 sandwich = "2.1.1"
 sandwichRetrofitSerialization = "2.1.1"
+uuid = "0.8.4"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidxActivity" }
@@ -53,6 +55,8 @@ androidx-lifecycle-viewModelCompose = { group = "androidx.lifecycle", name = "li
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidxNavigation" }
 androidx-navigation-testing = { group = "androidx.navigation", name = "navigation-testing", version.ref = "androidxNavigation" }
 androidx-profileinstaller = { group = "androidx.profileinstaller", name = "profileinstaller", version.ref = "androidxProfileinstaller" }
+androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "androidxRoom" }
+androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "androidxRoom" }
 androidx-tracing-ktx = { group = "androidx.tracing", name = "tracing-ktx", version.ref = "androidxTracing" }
 capturable = { group = "dev.shreyaspatil", name = "capturable", version.ref = "capturable" }
 compose-qr-code = { group = "com.lightspark", name = "compose-qr-code", version.ref = "composeQrCode" }
@@ -78,6 +82,7 @@ robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "
 sandwich = { module = "com.github.skydoves:sandwich", version.ref = "sandwich" }
 sandwich-retrofit = { module = "com.github.skydoves:sandwich-retrofit", version.ref = "sandwich" }
 sandwich-retrofit-serialization = { module = "com.github.skydoves:sandwich-retrofit-serialization", version.ref = "sandwichRetrofitSerialization" }
+uuid = { group = "com.benasher44", name = "uuid", version.ref = "uuid" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }

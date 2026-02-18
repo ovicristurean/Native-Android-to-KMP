@@ -9,11 +9,11 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.minus
 import kotlinx.datetime.plus
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 class AnalyticsTest {
     private lateinit var repository: InMemoryAnalyticsRepository
@@ -36,11 +36,11 @@ class AnalyticsTest {
     @Test
     fun testDailyBreakdownAndAverage() = runTest {
         val from = baseTime
-        val to = baseTime.plus(2, DateTimeUnit.DAY) // 3 days total: 10, 11, 12
+        val to = baseTime.plus(2, DateTimeUnit.DAY, timeZone) // 3 days total: 10, 11, 12
 
         recordVisitUseCase(VisitEvent(shopId, baseTime)) // Day 1
         recordVisitUseCase(VisitEvent(shopId, baseTime)) // Day 1
-        recordVisitUseCase(VisitEvent(shopId, baseTime.plus(2, DateTimeUnit.DAY))) // Day 3
+        recordVisitUseCase(VisitEvent(shopId, baseTime.plus(2, DateTimeUnit.DAY, timeZone))) // Day 3
 
         val stats = getShopStatisticsUseCase(shopId, from, to, timeZone)
 
@@ -54,7 +54,7 @@ class AnalyticsTest {
     @Test
     fun testZeroVisitAverage() = runTest {
         val from = baseTime
-        val to = baseTime.plus(4, DateTimeUnit.DAY) // 5 days
+        val to = baseTime.plus(4, DateTimeUnit.DAY, timeZone) // 5 days
 
         val stats = getShopStatisticsUseCase(shopId, from, to, timeZone)
 
@@ -65,17 +65,17 @@ class AnalyticsTest {
 
     @Test
     fun testWeeklyTrendIncrease() = runTest {
-        val now = baseTime.plus(14, DateTimeUnit.DAY)
+        val now = baseTime.plus(14, DateTimeUnit.DAY, timeZone)
         
         // Previous week: 2 visits
-        recordVisitUseCase(VisitEvent(shopId, now.minus(10, DateTimeUnit.DAY)))
-        recordVisitUseCase(VisitEvent(shopId, now.minus(11, DateTimeUnit.DAY)))
+        recordVisitUseCase(VisitEvent(shopId, now.minus(10, DateTimeUnit.DAY, timeZone)))
+        recordVisitUseCase(VisitEvent(shopId, now.minus(11, DateTimeUnit.DAY, timeZone)))
 
         // Current week: 4 visits
-        recordVisitUseCase(VisitEvent(shopId, now.minus(1, DateTimeUnit.DAY)))
-        recordVisitUseCase(VisitEvent(shopId, now.minus(2, DateTimeUnit.DAY)))
-        recordVisitUseCase(VisitEvent(shopId, now.minus(3, DateTimeUnit.DAY)))
-        recordVisitUseCase(VisitEvent(shopId, now.minus(4, DateTimeUnit.DAY)))
+        recordVisitUseCase(VisitEvent(shopId, now.minus(1, DateTimeUnit.DAY, timeZone)))
+        recordVisitUseCase(VisitEvent(shopId, now.minus(2, DateTimeUnit.DAY, timeZone)))
+        recordVisitUseCase(VisitEvent(shopId, now.minus(3, DateTimeUnit.DAY, timeZone)))
+        recordVisitUseCase(VisitEvent(shopId, now.minus(4, DateTimeUnit.DAY, timeZone)))
 
         val trend = getWeeklyTrendUseCase(shopId, now, timeZone)
 
@@ -86,17 +86,17 @@ class AnalyticsTest {
 
     @Test
     fun testWeeklyTrendDecrease() = runTest {
-        val now = baseTime.plus(14, DateTimeUnit.DAY)
+        val now = baseTime.plus(14, DateTimeUnit.DAY, timeZone)
 
         // Previous week: 4 visits
-        recordVisitUseCase(VisitEvent(shopId, now.minus(10, DateTimeUnit.DAY)))
-        recordVisitUseCase(VisitEvent(shopId, now.minus(11, DateTimeUnit.DAY)))
-        recordVisitUseCase(VisitEvent(shopId, now.minus(12, DateTimeUnit.DAY)))
-        recordVisitUseCase(VisitEvent(shopId, now.minus(13, DateTimeUnit.DAY)))
+        recordVisitUseCase(VisitEvent(shopId, now.minus(10, DateTimeUnit.DAY, timeZone)))
+        recordVisitUseCase(VisitEvent(shopId, now.minus(11, DateTimeUnit.DAY, timeZone)))
+        recordVisitUseCase(VisitEvent(shopId, now.minus(12, DateTimeUnit.DAY, timeZone)))
+        recordVisitUseCase(VisitEvent(shopId, now.minus(13, DateTimeUnit.DAY, timeZone)))
 
         // Current week: 2 visits
-        recordVisitUseCase(VisitEvent(shopId, now.minus(1, DateTimeUnit.DAY)))
-        recordVisitUseCase(VisitEvent(shopId, now.minus(2, DateTimeUnit.DAY)))
+        recordVisitUseCase(VisitEvent(shopId, now.minus(1, DateTimeUnit.DAY, timeZone)))
+        recordVisitUseCase(VisitEvent(shopId, now.minus(2, DateTimeUnit.DAY, timeZone)))
 
         val trend = getWeeklyTrendUseCase(shopId, now, timeZone)
 
@@ -107,14 +107,14 @@ class AnalyticsTest {
 
     @Test
     fun testWeeklyTrendEdgeCases() = runTest {
-        val now = baseTime.plus(14, DateTimeUnit.DAY)
+        val now = baseTime.plus(14, DateTimeUnit.DAY, timeZone)
 
         // Both zero
         var trend = getWeeklyTrendUseCase(shopId, now, timeZone)
         assertEquals(0.0, trend.percentageChange)
 
         // Previous zero, current non-zero
-        recordVisitUseCase(VisitEvent(shopId, now.minus(1, DateTimeUnit.DAY)))
+        recordVisitUseCase(VisitEvent(shopId, now.minus(1, DateTimeUnit.DAY, timeZone)))
         trend = getWeeklyTrendUseCase(shopId, now, timeZone)
         assertEquals(100.0, trend.percentageChange)
     }

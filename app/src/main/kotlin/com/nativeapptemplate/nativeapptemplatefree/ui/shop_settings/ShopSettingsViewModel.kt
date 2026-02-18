@@ -8,6 +8,8 @@ import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginRepository
 import com.nativeapptemplate.nativeapptemplatefree.data.shop.ShopRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.Shop
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.ShopSettingsRoute
+import com.ovidiucristurean.shared.analytics.logMessage
+import com.ovidiucristurean.shared.analytics.presentation.AnalyticsTracker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -33,7 +35,8 @@ class ShopSettingsViewModel @Inject constructor(
   savedStateHandle: SavedStateHandle,
   private val loginRepository: LoginRepository,
   private val shopRepository: ShopRepository,
-  ) : ViewModel() {
+  private val analyticsTracker: AnalyticsTracker,
+) : ViewModel() {
   private val shopId = savedStateHandle.toRoute<ShopSettingsRoute>().id
 
   private val _uiState = MutableStateFlow(ShopSettingsUiState())
@@ -66,6 +69,9 @@ class ShopSettingsViewModel @Inject constructor(
           }
         }
         .collect { shop ->
+          analyticsTracker.trackVisit(shopId)
+          logMessage("visit analytics from viewmodel for shop: $shopId")
+
           _uiState.update {
             it.copy(
               shop = shop,
