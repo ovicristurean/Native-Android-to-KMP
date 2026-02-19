@@ -6,12 +6,9 @@ import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Response
 import java.io.IOException
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlin.coroutines.cancellation.CancellationException
 
-@Singleton
-class AuthInterceptor @Inject constructor(
+class AuthInterceptor (
   private val natPreferencesDataSource: NatPreferencesDataSource,
 ) : Interceptor {
   private suspend fun requestHelper(

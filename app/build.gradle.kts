@@ -3,7 +3,6 @@ import com.google.protobuf.gradle.GenerateProtoTask
 plugins {
   alias(libs.plugins.android.application)
   alias(libs.plugins.compose)
-  alias(libs.plugins.hilt)
   alias(libs.plugins.kotlin.android)
   alias(libs.plugins.kotlin.parcelize)
   alias(libs.plugins.kotlin.serialization)
@@ -99,24 +98,6 @@ protobuf {
   }
 }
 
-// Avoid "androidx.datastore.core.DataStore<error.NonExistentClass>"
-// https://github.com/google/ksp/issues/1590#issuecomment-1826387452
-androidComponents {
-  onVariants(selector().all()) { variant ->
-    afterEvaluate {
-      val protoTask =
-        project.tasks.getByName("generate" + variant.name.replaceFirstChar { it.uppercaseChar() } + "Proto") as GenerateProtoTask
-
-      project.tasks.getByName("ksp" + variant.name.replaceFirstChar { it.uppercaseChar() } + "Kotlin") {
-        dependsOn(protoTask)
-        (this as org.jetbrains.kotlin.gradle.tasks.AbstractKotlinCompileTool<*>).setSource(
-          protoTask.outputBaseDir
-        )
-      }
-    }
-  }
-}
-
 dependencies {
   api(libs.protobuf.kotlin.lite)
 
@@ -135,7 +116,6 @@ dependencies {
   implementation(libs.androidx.core.ktx)
   implementation(libs.androidx.core.splashscreen)
   implementation(libs.androidx.datastore.core)
-  implementation(libs.androidx.hilt.navigation.compose)
   implementation(libs.androidx.lifecycle.runtimeCompose)
   implementation(libs.androidx.lifecycle.viewModelCompose)
   implementation(libs.androidx.navigation.compose)
@@ -144,7 +124,14 @@ dependencies {
   implementation(libs.androidx.tracing.ktx)
   implementation(libs.capturable)
   implementation(libs.compose.qr.code)
-  implementation(libs.hilt.android)
+
+  // Koin
+  implementation(platform(libs.koin.bom))
+  implementation(libs.koin.core)
+  implementation(libs.koin.android)
+  implementation(libs.koin.androidx.compose)
+  implementation(libs.koin.compose.viewmodel)
+
   implementation(libs.kotlin.stdlib.jdk8)
   implementation(libs.kotlinx.coroutines.guava)
   implementation(libs.kotlinx.datetime)
@@ -158,12 +145,9 @@ dependencies {
   implementation(libs.sandwich.retrofit)
   implementation(libs.sandwich.retrofit.serialization)
 
-  ksp(libs.hilt.compiler)
-
   debugImplementation(libs.androidx.compose.ui.tooling)
 
   testImplementation(libs.androidx.navigation.testing)
-  testImplementation(libs.hilt.android.testing)
   testImplementation(libs.kotlin.test)
   testImplementation(libs.kotlinx.coroutines.test)
   testImplementation(libs.robolectric)

@@ -39,7 +39,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -49,10 +48,11 @@ import com.nativeapptemplate.nativeapptemplatefree.ui.common.ErrorView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadingView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.MainButtonView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.SwipeableItemWithActions
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 internal fun ItemTagListView(
-  viewModel: ItemTagListViewModel = hiltViewModel(),
+  viewModel: ItemTagListViewModel = koinViewModel(),
   onItemClick: (String) -> Unit,
   onAddItemTagClick: (String) -> Unit,
   onShowSnackbar: suspend (String, String?, SnackbarDuration?) -> Boolean,

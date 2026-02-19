@@ -41,7 +41,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -51,6 +50,7 @@ import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadingView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.MainButtonView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.NonScaledSp.nonScaledSp
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
 
 enum class ScanPage(
   @StringRes val titleResId: Int,
@@ -62,7 +62,7 @@ enum class ScanPage(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun ScanView(
-  viewModel: ScanViewModel = hiltViewModel(),
+  viewModel: ScanViewModel = koinViewModel(),
   onShowDoScanViewClick: (Boolean) -> Unit,
   onShowSnackbar: suspend (String, String?, SnackbarDuration?) -> Boolean,
   pages: Array<ScanPage> = ScanPage.entries.toTypedArray(),
@@ -400,6 +400,3 @@ private fun ScanLoadingView(
     }
   }
 }
-
-
-

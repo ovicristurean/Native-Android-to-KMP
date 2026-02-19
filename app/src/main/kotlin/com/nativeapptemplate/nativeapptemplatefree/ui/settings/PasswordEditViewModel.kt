@@ -6,14 +6,13 @@ import com.nativeapptemplate.nativeapptemplatefree.NatConstants
 import com.nativeapptemplate.nativeapptemplatefree.data.login.AccountPasswordRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.UpdatePasswordBody
 import com.nativeapptemplate.nativeapptemplatefree.model.UpdatePasswordBodyDetail
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+
 
 data class PasswordEditUiState(
   val currentPassword: String = "",
@@ -26,8 +25,7 @@ data class PasswordEditUiState(
   val message: String = "",
 )
 
-@HiltViewModel
-class PasswordEditViewModel @Inject constructor(
+class PasswordEditViewModel (
   private val accountPasswordRepository: AccountPasswordRepository
 ) : ViewModel() {
   private val _uiState = MutableStateFlow(PasswordEditUiState())

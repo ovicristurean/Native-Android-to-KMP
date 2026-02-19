@@ -30,7 +30,6 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withLink
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nativeapptemplate.nativeapptemplatefree.NatConstants
 import com.nativeapptemplate.nativeapptemplatefree.R
@@ -38,10 +37,11 @@ import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadingView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.MainButtonView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.NatAlertDialog
 import com.nativeapptemplate.nativeapptemplatefree.utils.Utility.restartApp
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun AcceptTermsView(
-  viewModel: AcceptTermsViewModel = hiltViewModel(),
+  viewModel: AcceptTermsViewModel = koinViewModel(),
   onShowSnackbar: suspend (String, String?, SnackbarDuration?) -> Boolean,
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()

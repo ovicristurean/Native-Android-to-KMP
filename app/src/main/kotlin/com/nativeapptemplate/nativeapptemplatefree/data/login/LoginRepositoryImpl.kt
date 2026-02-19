@@ -2,11 +2,15 @@ package com.nativeapptemplate.nativeapptemplatefree.data.login
 
 import androidx.annotation.VisibleForTesting
 import com.nativeapptemplate.nativeapptemplatefree.datastore.NatPreferencesDataSource
-import com.nativeapptemplate.nativeapptemplatefree.model.*
+import com.nativeapptemplate.nativeapptemplatefree.model.CompleteScanResult
+import com.nativeapptemplate.nativeapptemplatefree.model.DarkThemeConfig
 import com.nativeapptemplate.nativeapptemplatefree.model.LoggedInShopkeeper
 import com.nativeapptemplate.nativeapptemplatefree.model.Login
-import com.nativeapptemplate.nativeapptemplatefree.network.Dispatcher
-import com.nativeapptemplate.nativeapptemplatefree.network.NatDispatchers
+import com.nativeapptemplate.nativeapptemplatefree.model.NativeAppTemplateApiError
+import com.nativeapptemplate.nativeapptemplatefree.model.Permissions
+import com.nativeapptemplate.nativeapptemplatefree.model.ShowTagInfoScanResult
+import com.nativeapptemplate.nativeapptemplatefree.model.Status
+import com.nativeapptemplate.nativeapptemplatefree.model.UserData
 import com.skydoves.sandwich.message
 import com.skydoves.sandwich.retrofit.serialization.deserializeErrorBody
 import com.skydoves.sandwich.suspendOnFailure
@@ -16,16 +20,15 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import javax.inject.Inject
 
 /**
  * Repository for session operations
  */
 @VisibleForTesting
-class LoginRepositoryImpl @Inject constructor(
+class LoginRepositoryImpl(
   private val api: LoginApi,
   private val natPreferencesDataSource: NatPreferencesDataSource,
-  @Dispatcher(NatDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
+  private val ioDispatcher: CoroutineDispatcher,
 ) : LoginRepository {
 
   override fun login(
@@ -42,17 +45,19 @@ class LoginRepositoryImpl @Inject constructor(
       val nativeAppTemplateApiError: NativeAppTemplateApiError?
 
       try {
-        nativeAppTemplateApiError = response.deserializeErrorBody<LoggedInShopkeeper, NativeAppTemplateApiError>()
+        nativeAppTemplateApiError =
+          response.deserializeErrorBody<LoggedInShopkeeper, NativeAppTemplateApiError>()
       } catch (exception: Exception) {
-        val message= "Not processable error(${message()})."
+        val message = "Not processable error(${message()})."
         throw Exception(message)
       }
 
       if (nativeAppTemplateApiError != null) {
-        val message= "${nativeAppTemplateApiError.message} [Status: ${nativeAppTemplateApiError.code}]"
+        val message =
+          "${nativeAppTemplateApiError.message} [Status: ${nativeAppTemplateApiError.code}]"
         throw Exception(message)
       } else {
-        val message= "Not processable error(${message()})."
+        val message = "Not processable error(${message()})."
         throw Exception(message)
       }
     }
@@ -85,17 +90,19 @@ class LoginRepositoryImpl @Inject constructor(
       val nativeAppTemplateApiError: NativeAppTemplateApiError?
 
       try {
-        nativeAppTemplateApiError = response.deserializeErrorBody<Permissions, NativeAppTemplateApiError>()
+        nativeAppTemplateApiError =
+          response.deserializeErrorBody<Permissions, NativeAppTemplateApiError>()
       } catch (exception: Exception) {
-        val message= "Not processable error(${message()})."
+        val message = "Not processable error(${message()})."
         throw Exception(message)
       }
 
       if (nativeAppTemplateApiError != null) {
-        val message= "${nativeAppTemplateApiError.message} [Status: ${nativeAppTemplateApiError.code}]"
+        val message =
+          "${nativeAppTemplateApiError.message} [Status: ${nativeAppTemplateApiError.code}]"
         throw Exception(message)
       } else {
-        val message= "Not processable error(${message()})."
+        val message = "Not processable error(${message()})."
         throw Exception(message)
       }
     }
@@ -113,17 +120,19 @@ class LoginRepositoryImpl @Inject constructor(
       val nativeAppTemplateApiError: NativeAppTemplateApiError?
 
       try {
-        nativeAppTemplateApiError = response.deserializeErrorBody<Status, NativeAppTemplateApiError>()
+        nativeAppTemplateApiError =
+          response.deserializeErrorBody<Status, NativeAppTemplateApiError>()
       } catch (exception: Exception) {
-        val message= "Not processable error(${message()})."
+        val message = "Not processable error(${message()})."
         throw Exception(message)
       }
 
       if (nativeAppTemplateApiError != null) {
-        val message= "${nativeAppTemplateApiError.message} [Status: ${nativeAppTemplateApiError.code}]"
+        val message =
+          "${nativeAppTemplateApiError.message} [Status: ${nativeAppTemplateApiError.code}]"
         throw Exception(message)
       } else {
-        val message= "Not processable error(${message()})."
+        val message = "Not processable error(${message()})."
         throw Exception(message)
       }
     }
@@ -141,28 +150,34 @@ class LoginRepositoryImpl @Inject constructor(
       val nativeAppTemplateApiError: NativeAppTemplateApiError?
 
       try {
-        nativeAppTemplateApiError = response.deserializeErrorBody<Status, NativeAppTemplateApiError>()
+        nativeAppTemplateApiError =
+          response.deserializeErrorBody<Status, NativeAppTemplateApiError>()
       } catch (exception: Exception) {
-        val message= "Not processable error(${message()})."
+        val message = "Not processable error(${message()})."
         throw Exception(message)
       }
 
       if (nativeAppTemplateApiError != null) {
-        val message= "${nativeAppTemplateApiError.message} [Status: ${nativeAppTemplateApiError.code}]"
+        val message =
+          "${nativeAppTemplateApiError.message} [Status: ${nativeAppTemplateApiError.code}]"
         throw Exception(message)
       } else {
-        val message= "Not processable error(${message()})."
+        val message = "Not processable error(${message()})."
         throw Exception(message)
       }
     }
   }.flowOn(ioDispatcher)
 
   override suspend fun setShouldFetchItemTagForShowTagInfoScan(shouldFetchItemTagForShowTagInfoScan: Boolean) {
-    natPreferencesDataSource.setShouldFetchItemTagForShowTagInfoScan(shouldFetchItemTagForShowTagInfoScan)
+    natPreferencesDataSource.setShouldFetchItemTagForShowTagInfoScan(
+      shouldFetchItemTagForShowTagInfoScan
+    )
   }
 
   override suspend fun setShouldCompleteItemTagForCompleteScan(shouldCompleteItemTagForCompleteScan: Boolean) {
-    natPreferencesDataSource.setShouldCompleteItemTagForCompleteScan(shouldCompleteItemTagForCompleteScan)
+    natPreferencesDataSource.setShouldCompleteItemTagForCompleteScan(
+      shouldCompleteItemTagForCompleteScan
+    )
   }
 
   override suspend fun setShouldNavigateToScanView(shouldNavigateToScanView: Boolean) {
@@ -239,21 +254,30 @@ class LoginRepositoryImpl @Inject constructor(
 
   override fun isShopDeleted(): Flow<Boolean> = natPreferencesDataSource.isShopDeleted()
 
-  override fun didShowTapShopBelowTip(): Flow<Boolean> = natPreferencesDataSource.didShowTapShopBelowTip()
+  override fun didShowTapShopBelowTip(): Flow<Boolean> =
+    natPreferencesDataSource.didShowTapShopBelowTip()
 
-  override fun didShowReadInstructionsTip(): Flow<Boolean> = natPreferencesDataSource.didShowReadInstructionsTip()
+  override fun didShowReadInstructionsTip(): Flow<Boolean> =
+    natPreferencesDataSource.didShowReadInstructionsTip()
 
-  override fun getMaximumQueueNumberLength(): Flow<Int> = natPreferencesDataSource.getMaximumQueueNumberLength()
+  override fun getMaximumQueueNumberLength(): Flow<Int> =
+    natPreferencesDataSource.getMaximumQueueNumberLength()
 
-  override fun shouldFetchItemTagForShowTagInfoScan(): Flow<Boolean> = natPreferencesDataSource.shouldFetchItemTagForShowTagInfoScan()
+  override fun shouldFetchItemTagForShowTagInfoScan(): Flow<Boolean> =
+    natPreferencesDataSource.shouldFetchItemTagForShowTagInfoScan()
 
-  override fun shouldCompleteItemTagForCompleteScan(): Flow<Boolean> = natPreferencesDataSource.shouldCompleteItemTagForCompleteScan()
+  override fun shouldCompleteItemTagForCompleteScan(): Flow<Boolean> =
+    natPreferencesDataSource.shouldCompleteItemTagForCompleteScan()
 
-  override fun shouldNavigateToScanView(): Flow<Boolean> = natPreferencesDataSource.shouldNavigateToScanView()
+  override fun shouldNavigateToScanView(): Flow<Boolean> =
+    natPreferencesDataSource.shouldNavigateToScanView()
 
-  override fun scanViewSelectedTabIndex(): Flow<Int> = natPreferencesDataSource.scanViewSelectedTabIndex()
+  override fun scanViewSelectedTabIndex(): Flow<Int> =
+    natPreferencesDataSource.scanViewSelectedTabIndex()
 
-  override fun completeScanResult(): Flow<CompleteScanResult> = natPreferencesDataSource.completeScanResult()
+  override fun completeScanResult(): Flow<CompleteScanResult> =
+    natPreferencesDataSource.completeScanResult()
 
-  override fun showTagInfoScanResult(): Flow<ShowTagInfoScanResult> = natPreferencesDataSource.showTagInfoScanResult()
+  override fun showTagInfoScanResult(): Flow<ShowTagInfoScanResult> =
+    natPreferencesDataSource.showTagInfoScanResult()
 }

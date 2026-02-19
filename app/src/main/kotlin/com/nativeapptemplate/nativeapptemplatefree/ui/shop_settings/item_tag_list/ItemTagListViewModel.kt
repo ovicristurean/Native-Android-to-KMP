@@ -9,7 +9,6 @@ import com.nativeapptemplate.nativeapptemplatefree.data.shop.ShopRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.ItemTags
 import com.nativeapptemplate.nativeapptemplatefree.model.Shop
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.ItemTagListRoute
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -21,7 +20,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+
 
 data class ItemTagListUiState(
   val shop: Shop = Shop(),
@@ -35,8 +34,7 @@ data class ItemTagListUiState(
 /**
  * ViewModel for library view
  */
-@HiltViewModel
-class ItemTagListViewModel @Inject constructor(
+class ItemTagListViewModel (
   savedStateHandle: SavedStateHandle,
   private val shopRepository: ShopRepository,
   private val itemTagRepository: ItemTagRepository,

@@ -6,14 +6,13 @@ import com.nativeapptemplate.nativeapptemplatefree.NatConstants
 import com.nativeapptemplate.nativeapptemplatefree.data.login.SignUpRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.SendConfirmation
 import com.nativeapptemplate.nativeapptemplatefree.utils.Utility.validateEmail
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+
 
 data class ResendConfirmationInstructionsUiState(
   val email: String = "",
@@ -24,8 +23,7 @@ data class ResendConfirmationInstructionsUiState(
   val message: String = "",
 )
 
-@HiltViewModel
-class ResendConfirmationInstructionsViewModel @Inject constructor(
+class ResendConfirmationInstructionsViewModel (
   private val signUpRepository: SignUpRepository
 ) : ViewModel() {
   private val _uiState = MutableStateFlow(ResendConfirmationInstructionsUiState())

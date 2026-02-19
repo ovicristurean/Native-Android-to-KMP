@@ -42,7 +42,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -50,10 +49,11 @@ import com.nativeapptemplate.nativeapptemplatefree.R
 import com.nativeapptemplate.nativeapptemplatefree.model.TimeZones
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.ErrorView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadingView
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ShopBasicSettingsView(
-  viewModel: ShopBasicSettingsViewModel = hiltViewModel(),
+  viewModel: ShopBasicSettingsViewModel = koinViewModel(),
   onShowSnackbar: suspend (String, String?, SnackbarDuration?) -> Boolean,
   onBackClick: () -> Unit,
 ) {
@@ -123,8 +123,6 @@ fun ShopBasicSettingsContentView(
       TopAppBar(onBackClick)
     },
     floatingActionButton = {
-      // FloatingActionButton doesn't support the enabled property
-      // https://stackoverflow.com/a/68853697/1160200
       Button(
         onClick = { viewModel.updateShop() },
         modifier = Modifier.defaultMinSize(minWidth = 64.dp, minHeight = 64.dp),
@@ -182,7 +180,6 @@ fun ShopBasicSettingsContentView(
         onExpandedChange = { timeZoneDropdownMenuExpanded = it },
       ) {
         TextField(
-          // The `menuAnchor` modifier must be passed to the text field for correctness.
           modifier = Modifier.menuAnchor(PrimaryEditable, true),
           readOnly = true,
           value = TimeZones.map[uiState.timeZone]!!,

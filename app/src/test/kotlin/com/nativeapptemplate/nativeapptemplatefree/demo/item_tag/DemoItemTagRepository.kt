@@ -1,7 +1,6 @@
 package com.nativeapptemplate.nativeapptemplatefree.demo.item_tag
 
 import android.content.Context
-import androidx.test.core.app.ApplicationProvider
 import com.nativeapptemplate.nativeapptemplatefree.data.item_tag.ItemTagRepository
 import com.nativeapptemplate.nativeapptemplatefree.demo.DemoAssetManager
 import com.nativeapptemplate.nativeapptemplatefree.demo.DemoAssetManagerImpl
@@ -19,9 +18,8 @@ import kotlinx.coroutines.withContext
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
-import javax.inject.Inject
 
-class DemoItemTagRepository @Inject constructor(
+class DemoItemTagRepository(
   @Dispatcher(NatDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
   private val networkJson: Json,
   private val assets: DemoAssetManager = DemoAssetManagerImpl,

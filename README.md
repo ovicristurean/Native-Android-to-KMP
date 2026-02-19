@@ -23,7 +23,7 @@ NativeAppTemplate-Free-Android uses modern Android development tools and practic
 
 - **100% Kotlin**
 - **100% Jetpack Compose**
-- **Hilt** (Dependency Injection)
+- **Koin** (Dependency Injection)
 - **Retrofit2** (Networking)
 - **[Proto DataStore](https://developer.android.com/topic/libraries/architecture/datastore)**  
 - **[Android Modern App Architecture](https://developer.android.com/topic/architecture#modern-app-architecture)**

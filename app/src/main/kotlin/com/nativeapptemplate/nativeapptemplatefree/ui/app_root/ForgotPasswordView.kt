@@ -35,16 +35,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nativeapptemplate.nativeapptemplatefree.NatConstants
 import com.nativeapptemplate.nativeapptemplatefree.R
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadingView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.NatAlertDialog
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ForgotPasswordView(
-  viewModel: ForgotPasswordViewModel = hiltViewModel(),
+  viewModel: ForgotPasswordViewModel = koinViewModel(),
   onShowSnackbar: suspend (String, String?, SnackbarDuration?) -> Boolean,
   onBackClick: () -> Unit,
 ) {

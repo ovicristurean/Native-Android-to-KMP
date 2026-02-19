@@ -12,21 +12,19 @@ import com.nativeapptemplate.nativeapptemplatefree.model.ItemTagInfoFromNdefMess
 import com.nativeapptemplate.nativeapptemplatefree.model.ShowTagInfoScanResult
 import com.nativeapptemplate.nativeapptemplatefree.model.ShowTagInfoScanResultType
 import com.nativeapptemplate.nativeapptemplatefree.ui.scan.navigation.DoScanRoute
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+
 
 data class DoScanUiState(
   val isScanned: Boolean = false,
   val isLoading: Boolean = false,
 )
 
-@HiltViewModel
-class DoScanViewModel @Inject constructor(
+class DoScanViewModel (
   savedStateHandle: SavedStateHandle,
   private val loginRepository: LoginRepository,
   ) : ViewModel() {

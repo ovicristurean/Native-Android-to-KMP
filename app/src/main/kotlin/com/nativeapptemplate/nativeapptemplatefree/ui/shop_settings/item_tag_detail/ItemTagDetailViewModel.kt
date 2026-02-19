@@ -7,7 +7,6 @@ import androidx.navigation.toRoute
 import com.nativeapptemplate.nativeapptemplatefree.data.item_tag.ItemTagRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.ItemTag
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.ItemTagDetailRoute
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,7 +14,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+
 
 data class ItemTagDetailUiState(
   val itemTag: ItemTag = ItemTag(),
@@ -29,8 +28,7 @@ data class ItemTagDetailUiState(
   val message: String = "",
 )
 
-@HiltViewModel
-class ItemTagDetailViewModel @Inject constructor(
+class ItemTagDetailViewModel (
   savedStateHandle: SavedStateHandle,
   private val itemTagRepository: ItemTagRepository,
 ) : ViewModel() {

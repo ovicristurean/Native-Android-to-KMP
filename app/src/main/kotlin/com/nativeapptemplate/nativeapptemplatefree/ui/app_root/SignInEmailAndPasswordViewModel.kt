@@ -9,7 +9,6 @@ import com.nativeapptemplate.nativeapptemplatefree.model.LoggedInShopkeeper
 import com.nativeapptemplate.nativeapptemplatefree.model.Login
 import com.nativeapptemplate.nativeapptemplatefree.model.Permissions
 import com.nativeapptemplate.nativeapptemplatefree.utils.Utility.validateEmail
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,7 +16,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+
 
 data class SignInEmailAndPasswordUiState(
   val email: String = "",
@@ -29,8 +28,7 @@ data class SignInEmailAndPasswordUiState(
   val message: String = "",
 )
 
-@HiltViewModel
-class SignInEmailAndPasswordViewModel @Inject constructor(
+class SignInEmailAndPasswordViewModel (
   private val loginRepository: LoginRepository
 ) : ViewModel() {
   private val _uiState = MutableStateFlow(SignInEmailAndPasswordUiState())
@@ -83,20 +81,20 @@ class SignInEmailAndPasswordViewModel @Inject constructor(
     }
   }
 
-  fun hasInvalidData() : Boolean {
+  fun hasInvalidData(): Boolean {
     if (hasInvalidDataEmail()) return true
     if (hasInvalidDataPassword()) return true
 
     return false
   }
 
-  fun hasInvalidDataEmail() : Boolean {
+  fun hasInvalidDataEmail(): Boolean {
     if (uiState.value.email.isBlank()) return true
 
     return !uiState.value.email.validateEmail()
   }
 
-  fun hasInvalidDataPassword() : Boolean {
+  fun hasInvalidDataPassword(): Boolean {
     if (uiState.value.password.isBlank()) return true
     if (uiState.value.password.length < NatConstants.MINIMUM_PASSWORD_LENGTH) return true
 

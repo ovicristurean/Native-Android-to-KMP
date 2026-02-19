@@ -2,12 +2,8 @@ package com.nativeapptemplate.nativeapptemplatefree.ui.app_root
 
 import androidx.lifecycle.ViewModel
 import com.nativeapptemplate.nativeapptemplatefree.R
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 
-@HiltViewModel
-class OnboardingViewModel @Inject constructor(
-) : ViewModel() {
+class OnboardingViewModel : ViewModel() {
   companion object {
     fun onboardingDescription(index: Int): Int {
       val description = when (index) {

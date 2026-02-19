@@ -41,7 +41,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -53,10 +52,11 @@ import com.nativeapptemplate.nativeapptemplatefree.ui.common.ErrorView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadingView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.MainButtonView
 import com.nativeapptemplate.nativeapptemplatefree.utils.Utility
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 internal fun SettingsView(
-  viewModel: SettingsViewModel = hiltViewModel(),
+  viewModel: SettingsViewModel = koinViewModel(),
   onShowShopkeeperEditClick: () -> Unit,
   onShowPasswordEditClick: () -> Unit,
   onShowSnackbar: suspend (String, String?, SnackbarDuration?) -> Boolean,

@@ -12,7 +12,6 @@ import com.nativeapptemplate.nativeapptemplatefree.model.ItemTagInfoFromNdefMess
 import com.nativeapptemplate.nativeapptemplatefree.model.Permissions
 import com.nativeapptemplate.nativeapptemplatefree.model.ShowTagInfoScanResult
 import com.nativeapptemplate.nativeapptemplatefree.model.UserData
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -21,10 +20,8 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class MainActivityViewModel @Inject constructor(
+class MainActivityViewModel(
   private val loginRepository: LoginRepository,
 ) : ViewModel() {
 

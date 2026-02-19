@@ -11,7 +11,6 @@ import com.nativeapptemplate.nativeapptemplatefree.model.ItemTag
 import com.nativeapptemplate.nativeapptemplatefree.model.ItemTags
 import com.nativeapptemplate.nativeapptemplatefree.model.Shop
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_detail.navigation.ShopDetailRoute
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,7 +19,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+
 
 data class ShopDetailUiState(
   val isLoading: Boolean = true,
@@ -34,8 +33,7 @@ data class ShopDetailUiState(
 /**
  * ViewModel for library view
  */
-@HiltViewModel
-class ShopDetailViewModel @Inject constructor(
+class ShopDetailViewModel (
   savedStateHandle: SavedStateHandle,
   private val loginRepository: LoginRepository,
   private val shopRepository: ShopRepository,

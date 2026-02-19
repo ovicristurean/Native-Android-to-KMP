@@ -12,7 +12,6 @@ import com.nativeapptemplate.nativeapptemplatefree.model.ItemTagInfoFromNdefMess
 import com.nativeapptemplate.nativeapptemplatefree.model.ShowTagInfoScanResult
 import com.nativeapptemplate.nativeapptemplatefree.model.ShowTagInfoScanResultType
 import com.nativeapptemplate.nativeapptemplatefree.model.UserData
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,7 +22,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+
 
 data class ScanUiState(
   val userData: UserData = UserData(),
@@ -42,8 +41,7 @@ data class ScanUiState(
 /**
  * ViewModel for library view
  */
-@HiltViewModel
-class ScanViewModel @Inject constructor(
+class ScanViewModel (
   private val loginRepository: LoginRepository,
   private val itemTagRepository: ItemTagRepository,
 ) : ViewModel() {
@@ -64,7 +62,8 @@ class ScanViewModel @Inject constructor(
 
     viewModelScope.launch {
       val userDataFlow: Flow<UserData> = loginRepository.userData
-      val showTagInfoScanResultFlow: Flow<ShowTagInfoScanResult> = loginRepository.showTagInfoScanResult()
+      val showTagInfoScanResultFlow: Flow<ShowTagInfoScanResult> =
+        loginRepository.showTagInfoScanResult()
       val completeScanResultFlow: Flow<CompleteScanResult> = loginRepository.completeScanResult()
 
       combine(
@@ -156,7 +155,8 @@ class ScanViewModel @Inject constructor(
     }
 
     viewModelScope.launch {
-      val itemTagFlow: Flow<ItemTag> = itemTagRepository.completeItemTag(itemTagInfoFromNdefMessage.id)
+      val itemTagFlow: Flow<ItemTag> =
+        itemTagRepository.completeItemTag(itemTagInfoFromNdefMessage.id)
 
       itemTagFlow
         .catch { exception ->

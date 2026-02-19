@@ -43,16 +43,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nativeapptemplate.nativeapptemplatefree.R
 import com.nativeapptemplate.nativeapptemplatefree.model.TimeZones
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadingView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.NatAlertDialog
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun ShopCreateView(
-  viewModel: ShopCreateViewModel = hiltViewModel(),
+  viewModel: ShopCreateViewModel = koinViewModel(),
   onShowSnackbar: suspend (String, String?, SnackbarDuration?) -> Boolean,
   onBackClick: () -> Unit,
 ) {
@@ -66,7 +66,7 @@ fun ShopCreateView(
 
   if (uiState.isCreated) {
     NatAlertDialog(
-      dialogTitle= stringResource(R.string.message_shop_created),
+      dialogTitle = stringResource(R.string.message_shop_created),
       onDismissRequest = { onBackClick() },
     )
   }
@@ -123,7 +123,7 @@ fun ShopCreateContentView(
         enabled = !viewModel.hasInvalidData(),
         shape = CircleShape
 
-      ){
+      ) {
         Icon(Icons.Filled.Done, contentDescription = stringResource(R.string.add_shop))
       }
     },
@@ -221,7 +221,7 @@ private fun TopAppBar(
       }) {
         Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
       }
-     },
+    },
     modifier = Modifier.fillMaxWidth(),
   )
 }

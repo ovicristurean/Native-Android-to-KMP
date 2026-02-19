@@ -5,12 +5,11 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.toRoute
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.ItemTagWriteRoute
 import com.nativeapptemplate.nativeapptemplatefree.utils.Utility
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import javax.inject.Inject
+
 
 data class ItemTagWriteUiState(
   val isUpdated: Boolean = false,
@@ -19,8 +18,7 @@ data class ItemTagWriteUiState(
   val message: String = "",
 )
 
-@HiltViewModel
-class ItemTagWriteViewModel @Inject constructor(
+class ItemTagWriteViewModel (
   savedStateHandle: SavedStateHandle,
 
   ) : ViewModel() {

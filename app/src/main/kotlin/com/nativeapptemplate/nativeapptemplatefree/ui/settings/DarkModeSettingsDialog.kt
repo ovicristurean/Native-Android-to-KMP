@@ -27,16 +27,16 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nativeapptemplate.nativeapptemplatefree.designsystem.theme.NatTheme
 import com.nativeapptemplate.nativeapptemplatefree.R
 import com.nativeapptemplate.nativeapptemplatefree.model.DarkThemeConfig
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun DarkModeSettingsDialog(
   onDismiss: () -> Unit,
-  viewModel: DarkModeSettingsViewModel = hiltViewModel(),
+  viewModel: DarkModeSettingsViewModel = koinViewModel(),
 ) {
   val settingsUiState by viewModel.darkModeSettingsUiState.collectAsStateWithLifecycle()
   DarkModeSettingsDialog(

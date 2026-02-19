@@ -7,7 +7,6 @@ import com.nativeapptemplate.nativeapptemplatefree.model.Shop
 import com.nativeapptemplate.nativeapptemplatefree.model.ShopBody
 import com.nativeapptemplate.nativeapptemplatefree.model.ShopBodyDetail
 import com.nativeapptemplate.nativeapptemplatefree.model.TimeZones
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,7 +14,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+
 
 data class ShopCreateUiState(
   val name: String = "",
@@ -27,8 +26,7 @@ data class ShopCreateUiState(
   val message: String = "",
 )
 
-@HiltViewModel
-class ShopCreateViewModel @Inject constructor(
+class ShopCreateViewModel (
   private val shopRepository: ShopRepository
 ) : ViewModel() {
   private val _uiState = MutableStateFlow(ShopCreateUiState())

@@ -38,7 +38,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -48,10 +47,11 @@ import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadingView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.MainButtonView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.NatAlertDialog
 import com.nativeapptemplate.nativeapptemplatefree.utils.Utility.restartApp
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 internal fun ShopSettingsView(
-  viewModel: ShopSettingsViewModel = hiltViewModel(),
+  viewModel: ShopSettingsViewModel = koinViewModel(),
 
   onShowBasicSettingsClick: (String) -> Unit,
   onShowItemTagListClick: (String) -> Unit,

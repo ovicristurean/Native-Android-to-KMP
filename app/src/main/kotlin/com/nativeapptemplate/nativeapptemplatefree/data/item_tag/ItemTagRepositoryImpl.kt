@@ -1,7 +1,11 @@
 package com.nativeapptemplate.nativeapptemplatefree.data.item_tag
 
 import com.nativeapptemplate.nativeapptemplatefree.datastore.NatPreferencesDataSource
-import com.nativeapptemplate.nativeapptemplatefree.model.*
+import com.nativeapptemplate.nativeapptemplatefree.model.ItemTag
+import com.nativeapptemplate.nativeapptemplatefree.model.ItemTagBody
+import com.nativeapptemplate.nativeapptemplatefree.model.ItemTags
+import com.nativeapptemplate.nativeapptemplatefree.model.NativeAppTemplateApiError
+import com.nativeapptemplate.nativeapptemplatefree.model.Status
 import com.nativeapptemplate.nativeapptemplatefree.network.Dispatcher
 import com.nativeapptemplate.nativeapptemplatefree.network.NatDispatchers
 import com.skydoves.sandwich.message
@@ -12,9 +16,8 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import javax.inject.Inject
 
-class ItemTagRepositoryImpl @Inject constructor(
+class ItemTagRepositoryImpl(
   private val mtcPreferencesDataSource: NatPreferencesDataSource,
   private val api: ItemTagApi,
   @Dispatcher(NatDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
@@ -34,17 +37,19 @@ class ItemTagRepositoryImpl @Inject constructor(
       val nativeAppTemplateApiError: NativeAppTemplateApiError?
 
       try {
-        nativeAppTemplateApiError = response.deserializeErrorBody<ItemTags, NativeAppTemplateApiError>()
+        nativeAppTemplateApiError =
+          response.deserializeErrorBody<ItemTags, NativeAppTemplateApiError>()
       } catch (exception: Exception) {
-        val message= "Not processable error(${message()})."
+        val message = "Not processable error(${message()})."
         throw Exception(message)
       }
 
       if (nativeAppTemplateApiError != null) {
-        val message= "${nativeAppTemplateApiError.message} [Status: ${nativeAppTemplateApiError.code}]"
+        val message =
+          "${nativeAppTemplateApiError.message} [Status: ${nativeAppTemplateApiError.code}]"
         throw Exception(message)
       } else {
-        val message= "Not processable error(${message()})."
+        val message = "Not processable error(${message()})."
         throw Exception(message)
       }
     }
@@ -64,17 +69,19 @@ class ItemTagRepositoryImpl @Inject constructor(
       val nativeAppTemplateApiError: NativeAppTemplateApiError?
 
       try {
-        nativeAppTemplateApiError = response.deserializeErrorBody<ItemTag, NativeAppTemplateApiError>()
+        nativeAppTemplateApiError =
+          response.deserializeErrorBody<ItemTag, NativeAppTemplateApiError>()
       } catch (exception: Exception) {
-        val message= "Not processable error(${message()})."
+        val message = "Not processable error(${message()})."
         throw Exception(message)
       }
 
       if (nativeAppTemplateApiError != null) {
-        val message= "${nativeAppTemplateApiError.message} [Status: ${nativeAppTemplateApiError.code}]"
+        val message =
+          "${nativeAppTemplateApiError.message} [Status: ${nativeAppTemplateApiError.code}]"
         throw Exception(message)
       } else {
-        val message= "Not processable error(${message()})."
+        val message = "Not processable error(${message()})."
         throw Exception(message)
       }
     }
@@ -99,17 +106,19 @@ class ItemTagRepositoryImpl @Inject constructor(
       val nativeAppTemplateApiError: NativeAppTemplateApiError?
 
       try {
-        nativeAppTemplateApiError = response.deserializeErrorBody<ItemTag, NativeAppTemplateApiError>()
+        nativeAppTemplateApiError =
+          response.deserializeErrorBody<ItemTag, NativeAppTemplateApiError>()
       } catch (exception: Exception) {
-        val message= "Not processable error(${message()})."
+        val message = "Not processable error(${message()})."
         throw Exception(message)
       }
 
       if (nativeAppTemplateApiError != null) {
-        val message= "${nativeAppTemplateApiError.message} [Status: ${nativeAppTemplateApiError.code}]"
+        val message =
+          "${nativeAppTemplateApiError.message} [Status: ${nativeAppTemplateApiError.code}]"
         throw Exception(message)
       } else {
-        val message= "Not processable error(${message()})."
+        val message = "Not processable error(${message()})."
         throw Exception(message)
       }
     }
@@ -134,17 +143,19 @@ class ItemTagRepositoryImpl @Inject constructor(
       val nativeAppTemplateApiError: NativeAppTemplateApiError?
 
       try {
-        nativeAppTemplateApiError = response.deserializeErrorBody<ItemTag, NativeAppTemplateApiError>()
+        nativeAppTemplateApiError =
+          response.deserializeErrorBody<ItemTag, NativeAppTemplateApiError>()
       } catch (exception: Exception) {
-        val message= "Not processable error(${message()})."
+        val message = "Not processable error(${message()})."
         throw Exception(message)
       }
 
       if (nativeAppTemplateApiError != null) {
-        val message= "${nativeAppTemplateApiError.message} [Status: ${nativeAppTemplateApiError.code}]"
+        val message =
+          "${nativeAppTemplateApiError.message} [Status: ${nativeAppTemplateApiError.code}]"
         throw Exception(message)
       } else {
-        val message= "Not processable error(${message()})."
+        val message = "Not processable error(${message()})."
         throw Exception(message)
       }
     }
@@ -161,17 +172,19 @@ class ItemTagRepositoryImpl @Inject constructor(
       val nativeAppTemplateApiError: NativeAppTemplateApiError?
 
       try {
-        nativeAppTemplateApiError = response.deserializeErrorBody<Status, NativeAppTemplateApiError>()
+        nativeAppTemplateApiError =
+          response.deserializeErrorBody<Status, NativeAppTemplateApiError>()
       } catch (exception: Exception) {
-        val message= "Not processable error(${message()})."
+        val message = "Not processable error(${message()})."
         throw Exception(message)
       }
 
       if (nativeAppTemplateApiError != null) {
-        val message= "${nativeAppTemplateApiError.message} [Status: ${nativeAppTemplateApiError.code}]"
+        val message =
+          "${nativeAppTemplateApiError.message} [Status: ${nativeAppTemplateApiError.code}]"
         throw Exception(message)
       } else {
-        val message= "Not processable error(${message()})."
+        val message = "Not processable error(${message()})."
         throw Exception(message)
       }
     }
@@ -188,17 +201,19 @@ class ItemTagRepositoryImpl @Inject constructor(
       val nativeAppTemplateApiError: NativeAppTemplateApiError?
 
       try {
-        nativeAppTemplateApiError = response.deserializeErrorBody<ItemTag, NativeAppTemplateApiError>()
+        nativeAppTemplateApiError =
+          response.deserializeErrorBody<ItemTag, NativeAppTemplateApiError>()
       } catch (exception: Exception) {
-        val message= "Not processable error(${message()})."
+        val message = "Not processable error(${message()})."
         throw Exception(message)
       }
 
       if (nativeAppTemplateApiError != null) {
-        val message= "${nativeAppTemplateApiError.message} [Status: ${nativeAppTemplateApiError.code}]"
+        val message =
+          "${nativeAppTemplateApiError.message} [Status: ${nativeAppTemplateApiError.code}]"
         throw Exception(message)
       } else {
-        val message= "Not processable error(${message()})."
+        val message = "Not processable error(${message()})."
         throw Exception(message)
       }
     }
@@ -215,17 +230,19 @@ class ItemTagRepositoryImpl @Inject constructor(
       val nativeAppTemplateApiError: NativeAppTemplateApiError?
 
       try {
-        nativeAppTemplateApiError = response.deserializeErrorBody<ItemTag, NativeAppTemplateApiError>()
+        nativeAppTemplateApiError =
+          response.deserializeErrorBody<ItemTag, NativeAppTemplateApiError>()
       } catch (exception: Exception) {
-        val message= "Not processable error(${message()})."
+        val message = "Not processable error(${message()})."
         throw Exception(message)
       }
 
       if (nativeAppTemplateApiError != null) {
-        val message= "${nativeAppTemplateApiError.message} [Status: ${nativeAppTemplateApiError.code}]"
+        val message =
+          "${nativeAppTemplateApiError.message} [Status: ${nativeAppTemplateApiError.code}]"
         throw Exception(message)
       } else {
-        val message= "Not processable error(${message()})."
+        val message = "Not processable error(${message()})."
         throw Exception(message)
       }
     }

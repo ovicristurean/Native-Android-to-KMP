@@ -18,11 +18,10 @@ package com.nativeapptemplate.nativeapptemplatefree.utils
 
 import android.util.Log
 import androidx.profileinstaller.ProfileVerifier
-import com.nativeapptemplate.nativeapptemplatefree.di.modules.ApplicationScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.guava.await
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+
 
 /**
  * Logs the app's Baseline Profile Compilation Status using [ProfileVerifier].
@@ -48,8 +47,8 @@ import javax.inject.Inject
  *
  * @see androidx.profileinstaller.ProfileVerifier.CompilationStatus.ResultCode
  */
-class ProfileVerifierLogger @Inject constructor(
-  @ApplicationScope private val scope: CoroutineScope,
+class ProfileVerifierLogger (
+  private val scope: CoroutineScope,
 ) {
     companion object {
         private const val TAG = "ProfileInstaller"

@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginRepository
 import com.nativeapptemplate.nativeapptemplatefree.data.shop.ShopRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.Shops
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -17,7 +16,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+
 
 data class ShopListUiState(
   val shops: Shops = Shops(),
@@ -31,8 +30,7 @@ data class ShopListUiState(
 /**
  * ViewModel for library view
  */
-@HiltViewModel
-class ShopListViewModel @Inject constructor(
+class ShopListViewModel (
   private val loginRepository: LoginRepository,
   private val shopRepository: ShopRepository
 ) : ViewModel() {

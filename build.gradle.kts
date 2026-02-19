@@ -19,7 +19,6 @@ plugins {
   alias(libs.plugins.compose) apply false
   alias(libs.plugins.dependency.analysis) apply true
   alias(libs.plugins.gms) apply false
-  alias(libs.plugins.hilt) apply false
   alias(libs.plugins.kotlin.android) apply false
   alias(libs.plugins.kotlin.parcelize) apply false
   alias(libs.plugins.kotlin.serialization) apply false

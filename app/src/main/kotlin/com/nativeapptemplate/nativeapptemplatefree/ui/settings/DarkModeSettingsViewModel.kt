@@ -4,17 +4,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.DarkThemeConfig
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+
 import kotlin.time.Duration.Companion.seconds
 
-@HiltViewModel
-class DarkModeSettingsViewModel @Inject constructor(
+class DarkModeSettingsViewModel (
   private val loginRepository: LoginRepository,
 ) : ViewModel() {
   val darkModeSettingsUiState: StateFlow<DarkModeSettingsUiState> =

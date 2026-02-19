@@ -9,7 +9,6 @@ import com.nativeapptemplate.nativeapptemplatefree.model.SignUpForUpdate
 import com.nativeapptemplate.nativeapptemplatefree.model.TimeZones
 import com.nativeapptemplate.nativeapptemplatefree.model.UserData
 import com.nativeapptemplate.nativeapptemplatefree.utils.Utility.validateEmail
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,7 +16,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+
 
 data class ShopkeeperEditUiState(
   val userData: UserData = UserData(),
@@ -35,8 +34,7 @@ data class ShopkeeperEditUiState(
   val message: String = "",
 )
 
-@HiltViewModel
-class ShopkeeperEditViewModel @Inject constructor(
+class ShopkeeperEditViewModel (
   private val loginRepository: LoginRepository,
   private val signUpRepository: SignUpRepository
 ) : ViewModel() {

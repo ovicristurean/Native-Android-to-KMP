@@ -2,8 +2,6 @@ package com.nativeapptemplate.nativeapptemplatefree.data.login
 
 import com.nativeapptemplate.nativeapptemplatefree.datastore.NatPreferencesDataSource
 import com.nativeapptemplate.nativeapptemplatefree.model.*
-import com.nativeapptemplate.nativeapptemplatefree.network.Dispatcher
-import com.nativeapptemplate.nativeapptemplatefree.network.NatDispatchers
 import com.skydoves.sandwich.message
 import com.skydoves.sandwich.retrofit.serialization.deserializeErrorBody
 import com.skydoves.sandwich.suspendOnFailure
@@ -12,12 +10,12 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import javax.inject.Inject
 
-class AccountPasswordRepositoryImpl @Inject constructor(
+
+class AccountPasswordRepositoryImpl (
   private val natPreferencesDataSource: NatPreferencesDataSource,
   private val api: AccountPasswordApi,
-  @Dispatcher(NatDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
+  private val ioDispatcher: CoroutineDispatcher,
 ) : AccountPasswordRepository {
   override fun updateAccountPassword(
     updatePasswordBody: UpdatePasswordBody,

@@ -25,9 +25,9 @@ import com.nativeapptemplate.nativeapptemplatefree.model.UserData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.io.IOException
-import javax.inject.Inject
 
-class NatPreferencesDataSource @Inject constructor(
+
+class NatPreferencesDataSource (
   private val userPreferences: DataStore<UserPreferences>,
 ) {
   val userData = userPreferences.data

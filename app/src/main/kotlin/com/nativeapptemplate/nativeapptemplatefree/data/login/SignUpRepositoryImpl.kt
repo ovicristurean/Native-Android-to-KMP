@@ -16,9 +16,9 @@ import com.skydoves.sandwich.suspendOnSuccess
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import javax.inject.Inject
 
-class SignUpRepositoryImpl @Inject constructor(
+
+class SignUpRepositoryImpl (
   private val api: SignUpApi,
   @Dispatcher(NatDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
 ) : SignUpRepository {
