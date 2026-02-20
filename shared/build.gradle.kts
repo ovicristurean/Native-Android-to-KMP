@@ -40,9 +40,8 @@ kotlin {
         implementation(libs.kotlinx.coroutines.core)
         implementation(libs.androidx.room.runtime)
         implementation(libs.uuid)
-
-        // Koin
         api(libs.koin.core)
+        implementation(libs.androidx.sqlite.bundled)
       }
     }
     commonTest {

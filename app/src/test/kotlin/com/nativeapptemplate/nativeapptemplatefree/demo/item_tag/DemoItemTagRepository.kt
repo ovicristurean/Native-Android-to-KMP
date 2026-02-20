@@ -1,6 +1,7 @@
 package com.nativeapptemplate.nativeapptemplatefree.demo.item_tag
 
 import android.content.Context
+import androidx.test.core.app.ApplicationProvider
 import com.nativeapptemplate.nativeapptemplatefree.data.item_tag.ItemTagRepository
 import com.nativeapptemplate.nativeapptemplatefree.demo.DemoAssetManager
 import com.nativeapptemplate.nativeapptemplatefree.demo.DemoAssetManagerImpl

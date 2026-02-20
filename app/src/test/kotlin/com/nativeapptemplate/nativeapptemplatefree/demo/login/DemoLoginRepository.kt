@@ -1,6 +1,7 @@
 package com.nativeapptemplate.nativeapptemplatefree.demo.login
 
 import android.content.Context
+import androidx.test.core.app.ApplicationProvider
 import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginRepository
 import com.nativeapptemplate.nativeapptemplatefree.demo.DemoAssetManager
 import com.nativeapptemplate.nativeapptemplatefree.demo.DemoAssetManagerImpl
@@ -25,7 +26,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
 
 
-class DemoLoginRepository (
+class DemoLoginRepository(
   private val ioDispatcher: CoroutineDispatcher,
   private val networkJson: Json,
   private val assets: DemoAssetManager = DemoAssetManagerImpl,
@@ -118,9 +119,9 @@ class DemoLoginRepository (
 
   override fun isShopDeleted(): Flow<Boolean> = MutableStateFlow(true)
 
-  override fun didShowTapShopBelowTip(): Flow<Boolean> =MutableStateFlow(true)
+  override fun didShowTapShopBelowTip(): Flow<Boolean> = MutableStateFlow(true)
 
-  override fun didShowReadInstructionsTip(): Flow<Boolean> =MutableStateFlow(true)
+  override fun didShowReadInstructionsTip(): Flow<Boolean> = MutableStateFlow(true)
 
   override fun getMaximumQueueNumberLength(): Flow<Int> = MutableStateFlow(5)
 
@@ -132,9 +133,11 @@ class DemoLoginRepository (
 
   override fun scanViewSelectedTabIndex(): Flow<Int> = MutableStateFlow(0)
 
-  override fun completeScanResult(): Flow<CompleteScanResult> = MutableStateFlow(CompleteScanResult())
+  override fun completeScanResult(): Flow<CompleteScanResult> =
+    MutableStateFlow(CompleteScanResult())
 
-  override fun showTagInfoScanResult(): Flow<ShowTagInfoScanResult> = MutableStateFlow(ShowTagInfoScanResult())
+  override fun showTagInfoScanResult(): Flow<ShowTagInfoScanResult> =
+    MutableStateFlow(ShowTagInfoScanResult())
 
   @OptIn(ExperimentalSerializationApi::class)
   private suspend inline fun <reified T> getDataFromJsonFile(fileName: String): T =

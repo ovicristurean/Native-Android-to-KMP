@@ -9,6 +9,7 @@ import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestLoginR
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestShopRepository
 import com.nativeapptemplate.nativeapptemplatefree.testing.util.MainDispatcherRule
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.ShopSettingsRoute
+import com.ovidiucristurean.shared.analytics.presentation.AnalyticsTracker
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -38,6 +39,7 @@ class ShopSettingsViewModelTest {
 
   private val shopRepository = TestShopRepository()
   private val loginRepository = TestLoginRepository()
+  private val analyticsTracker = TestAnalyticsTracker()
 
   private lateinit var viewModel: ShopSettingsViewModel
 
@@ -49,6 +51,7 @@ class ShopSettingsViewModelTest {
       ),
       loginRepository = loginRepository,
       shopRepository = shopRepository,
+      analyticsTracker = analyticsTracker,
     )
   }
 
@@ -71,6 +74,26 @@ class ShopSettingsViewModelTest {
     val shopFromRepository = shopRepository.getShop(testInputShop.datum!!.id!!).first()
 
     assertEquals(shopFromRepository, uiStateValue.shop)
+  }
+
+  @Test
+  fun reload_tracksVisitInAnalytics() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+
+    shopRepository.sendShop(testInputShop)
+
+    viewModel.reload()
+
+    assertEquals(testInputShop.datum!!.id, analyticsTracker.trackedShopId)
+  }
+}
+
+class TestAnalyticsTracker : AnalyticsTracker {
+  var trackedShopId: String? = null
+    private set
+
+  override fun trackVisit(shopId: String) {
+    trackedShopId = shopId
   }
 }
 

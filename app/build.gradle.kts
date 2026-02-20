@@ -144,6 +144,7 @@ dependencies {
   implementation(libs.sandwich)
   implementation(libs.sandwich.retrofit)
   implementation(libs.sandwich.retrofit.serialization)
+  implementation(libs.core.ktx)
 
   debugImplementation(libs.androidx.compose.ui.tooling)
 
