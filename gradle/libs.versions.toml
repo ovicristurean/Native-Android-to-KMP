@@ -34,7 +34,7 @@ sandwich = "2.1.1"
 sandwichRetrofitSerialization = "2.1.1"
 uuid = "0.8.4"
 skie = "0.10.10"
-sqliteBundled = "2.6.2"
+sqliteBundled = "2.5.0-alpha13"
 coreKtx = "1.7.0"
 
 [libraries]

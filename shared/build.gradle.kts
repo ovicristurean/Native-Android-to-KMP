@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 
 plugins {
@@ -16,22 +17,7 @@ kotlin {
     minSdk = 26
   }
 
-  val xcfName = "sharedKit"
-  val xcf = XCFramework(xcfName)
-  val bundleId = project.findProperty("bundleId")?.toString() ?: "com.nativeapptemplate.shared"
-
-  listOf(
-    iosX64(),
-    iosArm64(),
-    iosSimulatorArm64(),
-  ).forEach {
-    it.binaries.framework {
-      baseName = xcfName
-      binaryOption("bundleId", bundleId)
-      xcf.add(this)
-      isStatic = true
-    }
-  }
+  configureXCFramework()
 
   sourceSets {
     commonMain {
@@ -62,4 +48,23 @@ dependencies {
 
 room {
   schemaDirectory("$projectDir/schemas")
+}
+
+private fun KotlinMultiplatformExtension.configureXCFramework() {
+  val xcFrameworkName = "analyticsKit"
+  val xcf = XCFramework(xcFrameworkName)
+  val bundleId = "com.ovicristurean.${xcFrameworkName}"
+
+  listOf(
+    iosX64(),
+    iosArm64(),
+    iosSimulatorArm64(),
+  ).forEach {
+    it.binaries.framework {
+      baseName = xcFrameworkName
+      binaryOption("bundleId", bundleId)
+      xcf.add(this)
+      isStatic = true
+    }
+  }
 }

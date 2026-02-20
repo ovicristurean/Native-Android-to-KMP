@@ -62,4 +62,4 @@ app/release/*
 /.kotlin
 
 #XCFramework build artifacts
-analyticsKitPackage/
+AnalyticsKit/

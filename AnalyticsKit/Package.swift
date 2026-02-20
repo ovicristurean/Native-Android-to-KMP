@@ -2,19 +2,20 @@
 import PackageDescription
 
 let package = Package(
-    name: "analyticsKitPackage",
+    name: "AnalyticsKit",
     platforms: [
         .iOS(.v14)
     ],
     products: [
         .library(
-            name: "sharedKit",
-            targets: ["sharedKit"])
+            name: "analyticsKit",
+            targets: ["analyticsKit"]
+        )
     ],
     targets: [
         .binaryTarget(
-            name: "sharedKit",
-            path: "./sharedKit.xcframework"
+            name: "analyticsKit",
+            path: "./analyticsKit.xcframework"
         )
     ]
 )
