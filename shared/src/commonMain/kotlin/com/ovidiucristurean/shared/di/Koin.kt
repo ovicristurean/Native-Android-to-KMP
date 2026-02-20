@@ -13,23 +13,24 @@ import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
 
 fun initKoin(appDeclaration: KoinAppDeclaration = {}) =
-    startKoin {
-        appDeclaration()
-        modules(
-            commonModule(),
-            platformModule()
-        )
-    }
+  startKoin {
+    appDeclaration()
+    modules(
+      commonModule(),
+      platformModule()
+    )
+  }
 
+@Throws(Exception::class)
 fun commonModule() = module {
-    single<AnalyticsRepository> { RoomAnalyticsRepository(get()) }
-    single { RecordVisitUseCase(get()) }
-    single<AnalyticsTracker> { 
-        DefaultAnalyticsTracker(
-            recordVisit = get(),
-            scope = CoroutineScope(SupervisorJob())
-        )
-    }
+  single<AnalyticsRepository> { RoomAnalyticsRepository(get()) }
+  single { RecordVisitUseCase(get()) }
+  single<AnalyticsTracker> {
+    DefaultAnalyticsTracker(
+      recordVisit = get(),
+      scope = CoroutineScope(SupervisorJob())
+    )
+  }
 }
 
 expect fun platformModule(): Module

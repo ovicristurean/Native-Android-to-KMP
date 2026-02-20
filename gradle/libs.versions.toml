@@ -33,6 +33,7 @@ robolectric = "4.14.1"
 sandwich = "2.1.1"
 sandwichRetrofitSerialization = "2.1.1"
 uuid = "0.8.4"
+skie = "0.10.10"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidxActivity" }
@@ -99,3 +100,4 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 protobuf = { id = "com.google.protobuf", version.ref = "protobufPlugin" }
 room = { id = "androidx.room", version.ref = "androidxRoom" }
+skie = { id = "co.touchlab.skie", version.ref = "skie"}
