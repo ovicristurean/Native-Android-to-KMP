@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
+
 plugins {
   alias(libs.plugins.kotlin.multiplatform)
   alias(libs.plugins.android.kotlin.multiplatform.library)
@@ -14,9 +16,21 @@ kotlin {
   }
 
   val xcfName = "sharedKit"
-  iosX64 { binaries.framework { baseName = xcfName } }
-  iosArm64 { binaries.framework { baseName = xcfName } }
-  iosSimulatorArm64 { binaries.framework { baseName = xcfName } }
+  val xcf = XCFramework(xcfName)
+  val bundleId = project.findProperty("bundleId")?.toString() ?: "com.nativeapptemplate.shared"
+
+  listOf(
+    iosX64(),
+    iosArm64(),
+    iosSimulatorArm64(),
+  ).forEach {
+    it.binaries.framework {
+      baseName = xcfName
+      binaryOption("bundleId", bundleId)
+      xcf.add(this)
+      isStatic = true
+    }
+  }
 
   sourceSets {
     commonMain {

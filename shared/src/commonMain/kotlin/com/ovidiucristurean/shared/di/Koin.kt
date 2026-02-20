@@ -7,8 +7,19 @@ import com.ovidiucristurean.shared.analytics.presentation.AnalyticsTracker
 import com.ovidiucristurean.shared.analytics.presentation.DefaultAnalyticsTracker
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
+import org.koin.core.context.startKoin
 import org.koin.core.module.Module
+import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
+
+fun initKoin(appDeclaration: KoinAppDeclaration = {}) =
+    startKoin {
+        appDeclaration()
+        modules(
+            commonModule(),
+            platformModule()
+        )
+    }
 
 fun commonModule() = module {
     single<AnalyticsRepository> { RoomAnalyticsRepository(get()) }
