@@ -63,3 +63,4 @@ app/release/*
 
 #XCFramework build artifacts
 AnalyticsKit/
+RemoteAnalyticsKit/
