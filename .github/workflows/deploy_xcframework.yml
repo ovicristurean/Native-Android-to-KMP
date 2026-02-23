@@ -1,0 +1,89 @@
+name: Deploy XCFramework
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  deploy:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'zulu'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Build XCFramework
+        run: ./gradlew :shared:assembleAnalyticsKitXCFramework
+
+      - name: Zip XCFramework
+        run: |
+          cd shared/build/XCFrameworks/release
+          zip -r AnalyticsKit.xcframework.zip AnalyticsKit.xcframework
+
+      - name: Calculate Checksum
+        id: checksum
+        run: |
+          CHECKSUM=$(shasum -a 256 shared/build/XCFrameworks/release/AnalyticsKit.xcframework.zip | awk '{ print $1 }')
+          echo "checksum=$CHECKSUM" >> $GITHUB_OUTPUT
+
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: shared/build/XCFrameworks/release/AnalyticsKit.xcframework.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout Distribution Repo
+        uses: actions/checkout@v4
+        with:
+          repository: ovicristurean/AnalyticsKit
+          path: distribution-repo
+          token: ${{ secrets.SPM_REPO_TOKEN }}
+
+      - name: Update Package.swift
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/v}
+          URL="https://github.com/${{ github.repository }}/releases/download/v${VERSION}/AnalyticsKit.xcframework.zip"
+          CHECKSUM=${{ steps.checksum.outputs.checksum }}
+          
+          cat <<EOF > distribution-repo/Package.swift
+          // swift-tools-version:5.3
+          import PackageDescription
+
+          let package = Package(
+              name: "AnalyticsKit",
+              platforms: [
+                  .iOS(.v13)
+              ],
+              products: [
+                  .library(
+                      name: "AnalyticsKit",
+                      targets: ["AnalyticsKit"])
+              ],
+              targets: [
+                  .binaryTarget(
+                      name: "AnalyticsKit",
+                      url: "$URL",
+                      checksum: "$CHECKSUM"
+                  )
+              ]
+          )
+          EOF
+
+      - name: Commit and Push to Distribution Repo
+        run: |
+          cd distribution-repo
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add Package.swift
+          git commit -m "Update AnalyticsKit to ${GITHUB_REF#refs/tags/v}"
+          git push
