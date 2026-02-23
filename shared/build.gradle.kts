@@ -51,7 +51,7 @@ room {
 }
 
 private fun KotlinMultiplatformExtension.configureXCFramework() {
-  val xcFrameworkName = "analyticsKit"
+  val xcFrameworkName = "AnalyticsKit"
   val xcf = XCFramework(xcFrameworkName)
   val bundleId = "com.ovicristurean.${xcFrameworkName}"
 
