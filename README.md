@@ -1,134 +1,119 @@
-# NativeAppTemplate-Free-Android
+# Native Android to KMP Migration
 
-NativeAppTemplate-Free-Android is a modern, comprehensive, and production-ready native Android app with user authentication and [background tag reading](https://developer.apple.com/documentation/corenfc/adding-support-for-background-tag-reading).  
-This Android app is a free version of  [NativeAppTemplate-Android (Solo)](https://nativeapptemplate.com/products/android-solo) and [NativeAppTemplate-Android (Team)](https://nativeapptemplate.com/products/android-team).  
+This project is a fork of the [NativeAppTemplate-Free-Android](https://github.com/nativeapptemplate/NativeAppTemplate-Free-Android), originally a production-ready native Android app.  
 
-The iOS version is available here: [NativeAppTemplate-Free-iOS](https://github.com/nativeapptemplate/NativeAppTemplate-Free-iOS).  
+The goal of this fork is to demonstrate the migration of a mature native codebase to **Kotlin Multiplatform (KMP)**. By introducing a `:shared` module, we move core business logic and data persistence into a platform-agnostic layer, enabling code reuse across Android and iOS.
 
-## Overview
+## 🏗 Project Architecture
 
-NativeAppTemplate-Free-Android is configured to connect to `api.nativeapptemplate.com`.  
-You can purchase the source code for the backend server APIs, made with Ruby on Rails, that power `api.nativeapptemplate.com`:
+The project has evolved from a monolithic Android app into a multi-module KMP structure:
 
-- [NativeAppTemplate-API (Solo)](https://nativeapptemplate.com/products/api-solo)  
-- [NativeAppTemplate-API (Team)](https://nativeapptemplate.com/products/api-team)
+```plantuml
+@startuml
+package "Mobile Platforms" {
+    [Android App (Native)] as AndroidApp
+    [iOS App (SwiftUI/Native)] as iOSApp
+}
 
-### Screenshots
+package "KMP Shared Module" {
+    [Shared Module] as Shared
+    [Domain Layer (Usecases/Models)] as Domain
+    [Data Layer (Repositories/Room)] as Data
+}
 
-![Screenshot showing Sign in screen, Shops screen and Settings screen](https://github.com/nativeapptemplate/NativeAppTemplate-Free-Android/blob/main/docs/images/screenshots.png "Screenshot showing Sign in screen, Shops screen and Settings screen")
+AndroidApp --> Shared
+iOSApp ..> Shared : via XCFramework/SPM
+Shared --> Domain
+Shared --> Data
+@enduml
+```
 
-### Features
+### The `:shared` Module
+This is the heart of the migration. It contains the logic that is identical across platforms, reducing duplication and bugs.
 
-NativeAppTemplate-Free-Android uses modern Android development tools and practices, including:
-
-- **100% Kotlin**
-- **100% Jetpack Compose**
-- **Koin** (Dependency Injection)
-- **Retrofit2** (Networking)
-- **[Proto DataStore](https://developer.android.com/topic/libraries/architecture/datastore)**  
-- **[Android Modern App Architecture](https://developer.android.com/topic/architecture#modern-app-architecture)**
-- **[Simple MVVM Layered Architecture](https://medium.com/@dadachix/key-differences-in-mvvm-architecture-ios-vs-android-e239d30b2ea7)**
-- **Test**  
-- Inspired by [nowinandroid](https://github.com/android/nowinandroid) and [emitron-Android](https://github.com/razeware/emitron-Android)
-
-#### Included Features
-
-- Onboarding
-- Sign Up / Sign In / Sign Out
-- Email Confirmation
-- Forgot Password
-- Input Validation
-- CRUD Operations for Shops (Create/Read/Update/Delete)
-- CRUD Operations for Shops’ Nested Resource, Number Tags (ItemTags) (Create/Read/Update/Delete)
-- Generate QR Code Image for Number Tags (ItemTags) with a Centered Number
-- NFC features for Number Tags (ItemTags): Write Application Info to a Tag, Read a Tag, Background Tag Reading
-- And more!
-
-## NFC Tag Operations
-
-### Overview  
-
-![Screenshot showing Overview before](https://github.com/nativeapptemplate/NativeAppTemplate-Free-Android/blob/main/docs/images/overview_before.png "Screenshot showing Overview before")
-
-![Screenshot showing Overview after](https://github.com/nativeapptemplate/NativeAppTemplate-Free-Android/blob/main/docs/images/overview_after.png "Screenshot showing Overview after")
-
-The app replaces traditional paper tags with NFC tags to efficiently manage walk-in customer waitlists. It writes application-specific information onto your NFC cards (referred to as :red_circle: **Server Tag** and :large_blue_circle: **Customer Tag**).
-
-**For Customers:**  
-When a customer scans a :large_blue_circle: **Customer Tag**, they can view the :green_circle: **Number Tags Webpage** (a public webpage) on their mobile browser. This page displays completed Number Tags.
-
-**For Staff:**  
-By scanning a :red_circle: **Server Tag** paired with the :large_blue_circle: **Customer Tag**, staff can complete a Number Tag. Completed Number Tags automatically appear on the :green_circle: **Number Tags Webpage** for customer reference.
-
-### How It Works  
-
-![Screenshot showing Write Application Info to Tag screen, Scan Tag screen, and Shop Detail screen](https://github.com/nativeapptemplate/NativeAppTemplate-Free-Android/blob/main/docs/images/screenshots_nfc.png "Screenshot showing Write Application Info to Tag screen, Scan Tag screen, and Shop Detail screen")
-
-1. Write application info to pair **Number Tags** (Server Tag and Customer Tag) or a **Customer QR code**:  
-   - Go to: **Shops > [Shop] > Shop Settings > Manage Number Tags > [Number Tag]**.  
-2. Scan a **Server Tag** in the **Scan** tab.  
-3. View the updated **Number Tags** status in the **Shop Detail** screen or on the **Number Tags Webpage** (see Background Tag Reading GIF below).  
-
-### Recommended NFC Tags  
-For best performance, use **NTAG215 (540 bytes)** tags.  
-Example: [50pcs NFC Cards Ntag215](https://www.amazon.com/dp/B087FRYY8S) (Amazon USA).  
+*   **`commonMain`**: Contains the core logic, domain models, and repository interfaces.
+*   **`androidMain` & `iosMain`**: Handle platform-specific implementations (like Database drivers or Platform info) using the `expect`/`actual` pattern.
 
 ---
 
-### Background Tag Reading  
+## Migration Strategy & Philosophy
 
-![Gif showing Background Tag Reading](https://github.com/nativeapptemplate/NativeAppTemplate-Free-Android/blob/main/docs/images/nfc.gif "Showing Background Tag Reading")  
+The migration follows a structured approach designed to minimize friction for platform-specific developers, especially on the iOS side.
 
-1. Scan a Server Tag.  
-2. View the updated Number Tags status in the **Shop Detail** screen or on the **Number Tags Webpage**.  
+### 1. The Shared Foundation
+We start by creating the `:shared` KMP module within the Android project. The first priority is defining the **Domain** (Models, Use Cases) and **Data** (Repositories) layers here. This ensures that the business "truth" is centralized from the start.
 
-The **Number Tags Webpage** updates in real-time using Rails [Turbo](https://turbo.hotwired.dev).  
-This functionality is available in:  
-- [NativeAppTemplate-API (Solo)](https://nativeapptemplate.com/products/api-solo)  
-- [NativeAppTemplate-API (Team)](https://nativeapptemplate.com/products/api-team)  
+### 2. Dependency Injection: Hilt to Koin
+A key technical step was migrating the dependency injection framework from **Hilt** (Android-specific) to **Koin**. 
+- **Why?** Koin is a lightweight, Kotlin-first DI framework that works seamlessly across Multiplatform targets, allowing us to share module definitions between Android and iOS.
 
-> **Note:**  
-> The GIF above shows [MyTurnTag Creator for iOS](https://apps.apple.com/app/myturntag-creator/id1516198303) in action, which may behave slightly differently from **NativeAppTemplate-Free-Android**.
+### 3. iOS Integration: "No-Gradle" Philosophy
+The core philosophy is that **iOS developers should not be forced to use Gradle.** Forcing an Android build tool onto an iOS environment often leads to a poor developer experience.
 
-## Not Included in the Free Version
+Instead, the `:shared` module is exposed as an **XCFramework**:
+- **Local Testing**: Initially integrated as a [direct local framework](https://kotlinlang.org/docs/multiplatform/multiplatform-ios-integration-overview.html#direct-integration) to validate logic.
+- **Remote Distribution (SPM)**: For production, the module is distributed as a [Swift Package (SPM)](https://kotlinlang.org/docs/multiplatform/multiplatform-spm-export.html). 
 
-![Gif showing Switching organization](https://github.com/nativeapptemplate/NativeAppTemplate-Free-Android/blob/main/docs/images/organization.gif "Showing Switching organization")  
+### 4. Dedicated Distribution Repository
+To keep the iOS consumption as clean as possible, I created a **separate repository** for the distributed package: https://github.com/ovicristurean/AnalyticsKit 
+- **Contents**: The archived `.xcframework`, a `Package.swift` file, and a dedicated README.
+- **Benefit**: The iOS app only fetches the necessary binary and metadata, not the entire KMP source project. This mirrors how iOS devs consume any other 3rd party dependency.
 
-The full versions ([NativeAppTemplate-Android (Solo)](https://nativeapptemplate.com/products/android-solo) and [NativeAppTemplate-Android (Team)](https://nativeapptemplate.com/products/android-team)) include additional advanced features:
+```plantuml
+@startuml
+skinparam componentStyle uml2
 
-- URL Path-Based Multitenancy (prepends `/:account_id/` to URLs)
-- User Invitation to Organizations
-- Role-Based Permissions and Access Control
+node "KMP Project (This Repo)" {
+    [shared module] as KMP
+}
 
-## Getting Started
+node "Distribution Repo (SPM)" {
+    artifact "XCFramework" as XC
+    file "Package.swift" as PS
+}
 
-To get started, clone this repository:
+node "Native iOS Project" {
+    [Swift Code] as Swift
+}
 
-```bash
-git clone https://github.com/nativeapptemplate/NativeAppTemplate-Free-Android.git
+KMP -down-> XC : Build & Export
+XC -right-> PS : Reference
+PS -down-> Swift : Swift Package Manager
+@enduml
 ```
 
-## Requirements
+---
 
-To run this app successfully, ensure you have:
+## New Feature: Shared Analytics System
 
-- An Android device or emulator with API level 26 or higher.
+The primary feature migrated to KMP is a POC for an **Analytics System** (only tracking one screen visit, as an exampple). Instead of implementing tracking logic twice, it is now centralized.
 
-## Running with the NativeAppTemplate-API on localhost
+### Architecture Detail: Clean Multiplatform
+The analytics system follows Clean Architecture principles:
 
-To connect to a local API server, update the following configuration in the build.gradle.kts (Module: app):
+1.  **Domain Layer**: Defines `RecordVisitUseCase` and `GetWeeklyTrendUseCase`. It is pure Kotlin and has no dependencies on Android or iOS.
+2.  **Data Layer**: Uses **Room KMP** for local persistence. It tracks user interactions even when offline and syncs/aggregates data.
+3.  **Platform Layer**: Uses `AppLogger` to bridge KMP logging with platform-specific logs (Logcat for Android, NSLog for iOS).
 
-```kotlin
-buildConfigField("String", "DOMAIN","\"192.168.1.21\"")
-buildConfigField("String", "PORT","\"3000\"")
-buildConfigField("String", "SCHEME","\"http\"")
-```
+### Benefits of this Approach
+-   **Single Source of Truth**: Business rules are written once.
+-   **Offline First**: Shared Room database ensures analytics are never lost.
+-   **Type Safety**: Shared models ensure the UI layer always receives the correct data structure, regardless of the platform.
 
-## Blog
+---
 
-- [Key Differences in MVVM Architecture: iOS vs. Android](https://medium.com/@dadachix/key-differences-in-mvvm-architecture-ios-vs-android-e239d30b2ea7)
-- [Cross-Platform Background NFC Tag Reading](https://medium.com/@dadachix/cross-platform-background-nfc-tag-reading-8a704f0cb6e9)
+## Features (Original & Enhanced)
 
-## Contributing
+This project retains all the high-quality features of the original template while enhancing them with KMP:
 
-If you have an improvement you'd like to share, create a fork of the repository and send us a pull request.
+-   **100% Jetpack Compose** for the Android UI.
+-   **Koin** for Dependency Injection (Shared and Android).
+-   **NFC Tag Operations**: Manage waitlists using NFC (NTAG215).
+-   **User Authentication**: Sign Up / Sign In / Sign Out flows.
+
+---
+
+---
+
+## Credits
+Original Android Template by [NativeAppTemplate](https://nativeapptemplate.com).
