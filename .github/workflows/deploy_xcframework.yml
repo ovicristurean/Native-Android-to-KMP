@@ -83,13 +83,22 @@ jobs:
           )
           EOF
 
-      - name: Commit and Push to Distribution Repo
+      - name: Commit, Tag and Push to Distribution Repo
         env:
           SPM_REPO_TOKEN: ${{ secrets.SPM_REPO_TOKEN }}
         run: |
           cd distribution-repo
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          VERSION_TAG=${GITHUB_REF#refs/tags/}
+          
           git add Package.swift AnalyticsKit.xcframework.zip
-          git commit -m "Update AnalyticsKit to ${GITHUB_REF#refs/tags/v}"
+          git commit -m "Update AnalyticsKit to ${VERSION_TAG}"
+          
+          # Create the tag locally
+          git tag $VERSION_TAG
+          
+          # Push both the commit and the tag
           git push https://x-access-token:${SPM_REPO_TOKEN}@github.com/ovicristurean/AnalyticsKit.git HEAD
+          git push https://x-access-token:${SPM_REPO_TOKEN}@github.com/ovicristurean/AnalyticsKit.git $VERSION_TAG
