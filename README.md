@@ -34,6 +34,69 @@ This is the heart of the migration. It contains the logic that is identical acro
 *   **`commonMain`**: Contains the core logic, domain models, and repository interfaces.
 *   **`androidMain` & `iosMain`**: Handle platform-specific implementations (like Database drivers or Platform info) using the `expect`/`actual` pattern.
 
+#### Source Set Interaction
+The following diagram details how the Android application consumes the shared module and how the different source sets interact through the `expect`/`actual` mechanism:
+
+```plantuml
+@startuml
+skinparam componentStyle uml2
+
+package ":app (Android Native)" #PaleGreen {
+    [UI / ViewModels] as AppUI
+}
+
+package ":shared (KMP Module)" {
+    folder "commonMain" #LightBlue {
+        [Business Logic] as Logic
+        [Repository Interfaces] as Repo
+        interface "expect class/fun" as Expect
+        
+        Logic -[hidden]down-> Repo
+        Repo -[hidden]down-> Expect
+    }
+
+    folder "androidMain" #PaleGreen {
+        [Android-specific Code] as AndroidCode
+        [Room SQLite Driver (Android)] as AndroidRoom
+        interface "actual class/fun" as ActualA
+        
+        AndroidCode -[hidden]down-> AndroidRoom
+        AndroidRoom -[hidden]down-> ActualA
+    }
+
+    folder "iosMain" #Gold {
+        [iOS-specific Code] as iOSCode
+        [Room SQLite Driver (iOS)] as iOSRoom
+        interface "actual class/fun" as ActualI
+        
+        iOSCode -[hidden]down-> iOSRoom
+        iOSRoom -[hidden]down-> ActualI
+    }
+}
+
+' Dependency relationships
+AppUI -down-> Logic : calls
+AppUI -down-> AndroidCode : accesses
+
+ActualA .up.> Expect : implements
+ActualI .up.> Expect : implements
+
+androidMain -up-> commonMain : depends on
+iosMain -up-> commonMain : depends on
+
+note left of ActualI
+  Compiled into the 
+  iOS XCFramework
+end note
+
+note right of ActualA
+  Compiled into the 
+  Android Artifact
+end note
+
+@enduml
+```
+
 ---
 
 ## Migration Strategy & Philosophy
@@ -86,19 +149,73 @@ PS -down-> Swift : Swift Package Manager
 
 ## New Feature: Shared Analytics System
 
-The primary feature migrated to KMP is a POC for an **Analytics System** (only tracking one screen visit, as an exampple). Instead of implementing tracking logic twice, it is now centralized.
+The primary feature migrated to KMP is a POC for an **Analytics System**. Instead of implementing tracking logic twice, it is now centralized in the `:shared` module.
 
-### Architecture Detail: Clean Multiplatform
-The analytics system follows Clean Architecture principles:
+### Concrete Class Interaction
+The following diagram shows the specific classes and interfaces involved in the Analytics feature and how they interact:
 
-1.  **Domain Layer**: Defines `RecordVisitUseCase` and `GetWeeklyTrendUseCase`. It is pure Kotlin and has no dependencies on Android or iOS.
-2.  **Data Layer**: Uses **Room KMP** for local persistence. It tracks user interactions even when offline and syncs/aggregates data.
-3.  **Platform Layer**: Uses `AppLogger` to bridge KMP logging with platform-specific logs (Logcat for Android, NSLog for iOS).
+```plantuml
+@startuml
+skinparam classAttributeIconSize 0
+
+package "shared.analytics" {
+    
+    package "domain.model" #LightBlue {
+        class VisitEvent <<data>> {
+            +shopId: String
+            +timestamp: Instant
+        }
+        class WeeklyTrend <<data>> {
+            +currentWeek: Int
+            +previousWeek: Int
+            +percentageChange: Double
+        }
+    }
+
+    package "domain.repository" #LightBlue {
+        interface AnalyticsRepository {
+            +recordVisit(event: VisitEvent)
+            +getVisits(shopId: String, from: Instant, to: Instant): List<VisitEvent>
+        }
+    }
+
+    package "domain.usecase" #LightBlue {
+        class RecordVisitUseCase {
+            -repository: AnalyticsRepository
+            +invoke(event: VisitEvent)
+        }
+        class GetWeeklyTrendUseCase {
+            -repository: AnalyticsRepository
+            +invoke(shopId: String, now: Instant): WeeklyTrend
+        }
+    }
+
+    package "data.repository" #PaleGreen {
+        class RoomAnalyticsRepository {
+            -database: AnalyticsDatabase
+            +recordVisit(event: VisitEvent)
+            +getVisits(shopId: String, from: Instant, to: Instant): List<VisitEvent>
+        }
+    }
+}
+
+' Relationships
+RecordVisitUseCase --> AnalyticsRepository : uses
+GetWeeklyTrendUseCase --> AnalyticsRepository : uses
+
+RecordVisitUseCase ..> VisitEvent : operates on
+GetWeeklyTrendUseCase ..> WeeklyTrend : returns
+
+RoomAnalyticsRepository ..|> AnalyticsRepository : implements
+RoomAnalyticsRepository ..> VisitEvent : maps
+
+@enduml
+```
 
 ### Benefits of this Approach
--   **Single Source of Truth**: Business rules are written once.
--   **Offline First**: Shared Room database ensures analytics are never lost.
--   **Type Safety**: Shared models ensure the UI layer always receives the correct data structure, regardless of the platform.
+-   **Single Source of Truth**: Business rules (like the calculation of weekly trends) are written once in `GetWeeklyTrendUseCase`.
+-   **Offline First**: `RoomAnalyticsRepository` ensures analytics are persisted locally.
+-   **Type Safety**: Shared models like `VisitEvent` ensure the UI layer always receives the correct data structure.
 
 ---
 
