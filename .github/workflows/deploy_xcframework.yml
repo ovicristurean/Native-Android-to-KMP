@@ -50,11 +50,14 @@ jobs:
           token: ${{ secrets.SPM_REPO_TOKEN }}
           persist-credentials: true
 
-      - name: Update Package.swift
+      - name: Update Package.swift and Copy Zip
         run: |
           VERSION=${GITHUB_REF#refs/tags/v}
           URL="https://github.com/${{ github.repository }}/releases/download/v${VERSION}/AnalyticsKit.xcframework.zip"
           CHECKSUM=${{ steps.checksum.outputs.checksum }}
+          
+          # Copy the zipped xcframework to the distribution repo
+          cp shared/build/XCFrameworks/release/AnalyticsKit.xcframework.zip distribution-repo/
           
           cat <<EOF > distribution-repo/Package.swift
           // swift-tools-version:5.3
@@ -87,6 +90,6 @@ jobs:
           cd distribution-repo
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add Package.swift
+          git add Package.swift AnalyticsKit.xcframework.zip
           git commit -m "Update AnalyticsKit to ${GITHUB_REF#refs/tags/v}"
           git push https://x-access-token:${SPM_REPO_TOKEN}@github.com/ovicristurean/AnalyticsKit.git HEAD
