@@ -41,7 +41,11 @@ The following diagram details how the Android application consumes the shared mo
 @startuml
 skinparam componentStyle uml2
 
-package ":app (Android Native)" #PaleGreen {
+package "iOS Native app" #Gold {
+    [UI / ViewModels] as iOSAppUI
+}
+
+package "Android Native App)" #PaleGreen {
     [UI / ViewModels] as AppUI
 }
 
@@ -77,6 +81,9 @@ package ":shared (KMP Module)" {
 ' Dependency relationships
 AppUI -down-> Logic : calls
 AppUI -down-> AndroidCode : accesses
+
+iOSAppUI -down-> Logic:calls
+iOSAppUI -down-> iOSCode : accesses
 
 ActualA .up.> Expect : implements
 ActualI .up.> Expect : implements
